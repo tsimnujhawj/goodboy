@@ -3,7 +3,8 @@ const mysql = require("mysql");
 let con = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "root"
+    password: "root",
+    database: "bamazon"
 })
 
 con.connect(function(error){
@@ -12,6 +13,7 @@ con.connect(function(error){
     con.query(sql, function(error, result){
         if (error) throw error;
         // Results display here
-
+        console.log("results here")
     })
 })
+
