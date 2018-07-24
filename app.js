@@ -4,16 +4,13 @@ let con = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "root",
-    database: "bamazon"
+    database: "bamazon",
+    port: 3306,
 })
 
 con.connect(function(error){
     if (error) throw error;
     console.log("connected!");
-    con.query(sql, function(error, result){
-        if (error) throw error;
-        // Results display here
-        console.log("results here")
-    })
+    connection.end();
 })
 
