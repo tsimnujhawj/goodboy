@@ -23,7 +23,7 @@ con.query("SELECT * FROM products", (error, results) => {
     for (let i = 0; i < results.length; i++) {
         console.log(results[i].id + " | " + results[i].product_name + " | " + results[i].price + " | " + results[i].stock_quantity);
     }
-    console.log("-----------------------------------");
+    console.log("-------------------------------------------");
     con.end();
 })
 }
