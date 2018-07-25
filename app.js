@@ -61,6 +61,14 @@ con.query("SELECT * FROM products", (error, results)=> {
 
 function buyItem(){
     console.log("You wanna buy.");
+    inquirer.prompt({
+        name: "itemToBuy",
+        type: "input",
+        message: "What item do you want to buy? Type only the ID number please:"
+    }).then(answer => {
+        console.log("You want to buy item ID number: " + answer.itemToBuy);
+    })
+    con.end();
 }
 
 function noBuy(){
