@@ -67,6 +67,15 @@ function buyItem(){
         message: "What item do you want to buy? Type only the ID number please:"
     }).then(answer => {
         console.log("You want to buy item ID number: " + answer.itemToBuy);
+        let itemAdded = answer.itemToBuy;
+        inquirer.prompt({
+            name: "howMany",
+            type: "input",
+            message: "How many do you want to buy of item #" + itemAdded + " ?",
+        }).then(answer=>{
+            let itemQty = answer.howMany
+            console.log("You want item #" + itemAdded + " Quantity: " + itemQty)
+        })
     })
     con.end();
 }
