@@ -47,7 +47,7 @@ con.query("SELECT * FROM products", (error, results)=> {
     }).then(answer =>{
         switch (answer.options) {
             case "YES":
-                buyItem();
+                yesBuy();
                 break;
             case "NO":
                 noBuy();
@@ -59,7 +59,7 @@ con.query("SELECT * FROM products", (error, results)=> {
 })
 }
 
-function buyItem(){
+function yesBuy(){
     console.log("You wanna buy.");
     inquirer.prompt({
         name: "itemToBuy",
@@ -67,14 +67,16 @@ function buyItem(){
         message: "What item do you want to buy? Type only the ID number please:"
     }).then(answer => {
         console.log("You want to buy item ID number: " + answer.itemToBuy);
-        let itemAdded = answer.itemToBuy;
+        let itemId = answer.itemToBuy;
+        console.log(itemId)
         inquirer.prompt({
             name: "howMany",
             type: "input",
-            message: "How many do you want to buy of item #" + itemAdded + " ?",
+            message: "How many do you want to buy of item #" + itemId + " ?",
         }).then(answer=>{
             let itemQty = answer.howMany
-            console.log("You want item #" + itemAdded + " Quantity: " + itemQty)
+            console.log("You want item #" + itemId + " Quantity: " + itemQty)
+            
         })
     })
     con.end();
