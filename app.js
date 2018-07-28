@@ -76,10 +76,14 @@ function yesBuy(){
         }).then(answer=>{
             let itemQty = answer.howMany
             console.log("You want item #" + itemId + " Quantity: " + itemQty)
-            
+            let query = "SELECT products WHERE id=?";
+            con.query(query, {id: itemId, stock_quantity: itemQty}, (error, res)=>{
+                if (error) throw error;
+                console.log(query);
+            })
         })
     })
-    con.end();
+    
 }
 
 function noBuy(){
