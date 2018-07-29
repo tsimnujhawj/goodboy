@@ -75,11 +75,16 @@ function yesBuy(){
             message: "How many do you want to buy of item #" + itemId + " ?",
         }).then(answer=>{
             let itemQty = answer.howMany
-            console.log("You want item #" + itemId + " Quantity: " + itemQty)
-            let query = "SELECT products WHERE id=?";
-            con.query(query, {id: itemId, stock_quantity: itemQty}, (error, res)=>{
+            console.log("You want item #" + itemId + " | " + "Quantity: " + itemQty)
+            let checkQty = `SELECT * FROM products WHERE id = ${itemId}`;
+            con.query(checkQty, (error, result) => {
                 if (error) throw error;
-                console.log(query);
+                console.log(result);
+            })
+            let query = `UPDATE products SET stock_quantity = (stock_quantity - ${itemQtyTotal}) WHERE id = ${itemId}`;
+            con.query(query, (error, result)=>{
+                if (error) throw error;
+                console.log(result);
             })
         })
     })
