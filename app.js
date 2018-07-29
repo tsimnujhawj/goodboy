@@ -81,7 +81,7 @@ function yesBuy(){
                 if (error) throw error;
                 console.log(result);
             })
-            let query = `UPDATE products SET stock_quantity = (stock_quantity - ${itemQtyTotal}) WHERE id = ${itemId}`;
+            let query = `UPDATE products SET stock_quantity = (stock_quantity - ${itemQty}) WHERE id = ${itemId}`;
             con.query(query, (error, result)=>{
                 if (error) throw error;
                 console.log(result);
