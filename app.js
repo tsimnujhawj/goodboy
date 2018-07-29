@@ -76,16 +76,25 @@ function yesBuy(){
         }).then(answer=>{
             let itemQty = answer.howMany
             console.log("You want item #" + itemId + " | " + "Quantity: " + itemQty)
-            let checkQty = `SELECT * FROM products WHERE id = ${itemId}`;
+            let checkQty = `SELECT stock_quantity FROM products WHERE id = ${itemId}`;
             con.query(checkQty, (error, result) => {
                 if (error) throw error;
-                console.log(result);
+                let itemQtyQuery = result[0].stock_quantity
+                console.log(itemQtyQuery);
+                if (itemQtyQuery < itemQty) {
+                    console.log("Sorry, we only have " + itemQtyQuery + " remaining of item # " + itemId);
+                    console.log("Please try again")
+                    displayItems();
+                } else if (itemQtyQuery >= itemQty) {
+                    let query = `UPDATE products SET stock_quantity = (stock_quantity - ${itemQty}) WHERE id = ${itemId}`;
+                    con.query(query, (error, result)=>{
+                        if (error) throw error;
+                        console.log("Success!")
+                        displayItems();
+                    })
+                }
             })
-            let query = `UPDATE products SET stock_quantity = (stock_quantity - ${itemQty}) WHERE id = ${itemId}`;
-            con.query(query, (error, result)=>{
-                if (error) throw error;
-                console.log(result.stock_quantity);
-            })
+
         })
     })
     
