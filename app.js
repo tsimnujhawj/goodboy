@@ -21,6 +21,7 @@ con.connect((error)=>{
 function displayItems(){
 con.query("SELECT * FROM products", (error, results)=> {
     if (error) throw error;
+    console.log(" ");
     console.log("|--------------------------------------------------|");
     console.log("|---------------Good Boy! Good Buy!----------------|");
     console.log("|--------------------------------------------------|");
@@ -34,11 +35,11 @@ con.query("SELECT * FROM products", (error, results)=> {
     console.log("|--------------------------------------------------|");
     console.log("|--------------------------------------------------|");
     console.log("|--------------------------------------------------|");      
-
+    console.log(" ");
     for (let i = 0; i < results.length; i++) {
         console.log(results[i].id + " | " + results[i].product_name + " | " + results[i].price + " | " + results[i].stock_quantity);
     }
-    console.log("-------------------------------------------");
+    console.log("|--------------------------------------------------|");
     inquirer.prompt({
         name: "options",
         type: "list",
@@ -60,39 +61,42 @@ con.query("SELECT * FROM products", (error, results)=> {
 }
 
 function yesBuy(){
-    console.log("You wanna buy.");
     inquirer.prompt({
         name: "itemToBuy",
         type: "input",
         message: "What item do you want to buy? Type only the ID number please:"
     }).then(answer => {
-        console.log("You want to buy item ID number: " + answer.itemToBuy);
         let itemId = answer.itemToBuy;
-        console.log(itemId)
         inquirer.prompt({
             name: "howMany",
             type: "input",
             message: "How many do you want to buy of item #" + itemId + " ?",
-        }).then(answer=>{
+        }).then(answer => {
             let itemQty = answer.howMany
+            console.log("|--------------------------------------------------|");
             console.log("You want item #" + itemId + " | " + "Quantity: " + itemQty)
-            let checkQty = `SELECT stock_quantity FROM products WHERE id = ${itemId}`;
+            let checkQty = `SELECT * FROM products WHERE id = ${itemId}`;
+
             con.query(checkQty, (error, result) => {
                 if (error) throw error;
-                let itemQtyQuery = result[0].stock_quantity
-                console.log(itemQtyQuery);
+
+                let itemQtyQuery = result[0].stock_quantity;
+                let itemNameQuery = result[0].product_name;
+
                 if (itemQtyQuery < itemQty) {
-                    console.log("Sorry, we only have " + itemQtyQuery + " remaining of item # " + itemId);
+                    console.log("Sorry, we only have " + itemQtyQuery + " remaining of: " + itemNameQuery);
                     console.log("Please try again")
                     displayItems();
+
                 } else if (itemQtyQuery >= itemQty) {
                     let query = `UPDATE products SET stock_quantity = (stock_quantity - ${itemQty}) WHERE id = ${itemId}`;
                     con.query(query, (error, result)=>{
                         if (error) throw error;
-                        console.log("Success!")
+                        console.log("Success! You have just purchased " + itemNameQuery + " | Quantity: " + itemQty)
                         displayItems();
                     })
                 }
+
             })
 
         })
@@ -101,6 +105,6 @@ function yesBuy(){
 }
 
 function noBuy(){
-    console.log("y u no buy?");
+    console.log("y u no buy? bad boy...");
     con.end();
 }
