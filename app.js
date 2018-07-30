@@ -37,7 +37,7 @@ con.query("SELECT * FROM products", (error, results)=> {
     console.log("|--------------------------------------------------|");      
     console.log(" ");
     for (let i = 0; i < results.length; i++) {
-        console.log(results[i].id + " | " + results[i].product_name + " | $" + results[i].price + " | " + results[i].stock_quantity);
+        console.log(results[i].id + " | " + results[i].product_name + " | $" + results[i].price + " | Quantity: " + results[i].stock_quantity);
     }
     console.log("|--------------------------------------------------|");
     inquirer.prompt({
