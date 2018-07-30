@@ -179,8 +179,3 @@ function addNewProduct(){
         })
     })
 }
-
-function noBuy(){
-    console.log("y u no buy? bad boy...");
-    con.end();
-}
