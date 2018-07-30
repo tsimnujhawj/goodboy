@@ -13,7 +13,7 @@ let con = mysql.createConnection({
 // Connect
 con.connect((error)=>{
     if (error) throw error;
-    console.log("connected!");
+    console.log("You are connected to the Goodboy e-market!");
     displayItems();
 })
 

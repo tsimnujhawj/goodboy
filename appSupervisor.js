@@ -37,23 +37,25 @@ function initialize(){
         name: "options",
         type: "list",
         message: "What would you like to do?",
-        choices: ["View Products for Sale", "View Low Inventory", "Add to Inventory", "Add New Product"]
+        choices: ["View Products Sales by Department", "Create New Department",]
     }).then(answer =>{
         switch (answer.options) {
-            case "View Products for Sale":
-                displayItems();
+            case "View Products Sales by Department":
+                displaySales();
                 break;
-            case "View Low Inventory":
-                lowItems();
-                break;
-            case "Add to Inventory":
-                addToInventory()
-                break;
-            case "Add New Product":
-                addNewProduct();
+            case "Create New Department":
+                newDept();
                 break;
             default:
                 initialize();
         }
     })
 };
+
+function displaySales(){
+    let query = "SELECT departments.department_name, products.department_name, products.product_name FROM departments, products WHERE departments.department_name = products.department_name ORDER BY departments.department_name"
+    con.query(query, (error, results) => {
+        if (error) throw error;
+        console.log(results[0]);
+    })
+}
