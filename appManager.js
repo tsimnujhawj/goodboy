@@ -50,10 +50,10 @@ function initialize(){
                 addToInventory()
                 break;
             case "Add New Product":
-                noBuy();
+                addNewProduct();
                 break;
             default:
-                displayItems();
+                initialize();
         }
     })
 };
@@ -65,6 +65,7 @@ function displayItems(){
         console.log("|--------------------------------------------------|");
         console.log("|----------------Products for Sale-----------------|");
         console.log("|--------------------------------------------------|");
+        console.log(" ");
         for (let i = 0; i < results.length; i++) {
             console.log(results[i].id + " | " + results[i].product_name + " | $" + results[i].price + " | Quantity: " + results[i].stock_quantity);
         }
@@ -81,6 +82,7 @@ function lowItems(){
         console.log("|--------------------------------------------------|");
         console.log("|------------------Low Inventory-------------------|");
         console.log("|--------------------------------------------------|");
+        console.log(" ");
         if (results.length === 0) {
             console.log("You are stocked up!")
         } else {
@@ -95,6 +97,10 @@ function lowItems(){
 }
 
 function addToInventory(){
+    console.log("|--------------------------------------------------|");
+    console.log("|------------------Add to Inventory----------------|");
+    console.log("|--------------------------------------------------|");
+    console.log(" ");
     inquirer.prompt({
         name: "itemToBuy",
         type: "input",
@@ -106,7 +112,7 @@ function addToInventory(){
             type: "input",
             message: "How many do you want to add to item #" + itemId + " ?",
         }).then(answer => {
-            let itemQty = answer.howMany
+            let itemQty = answer.howMany;
             console.log("|--------------------------------------------------|");
             console.log("You want to add " + itemQty + " to item #" + itemId)
             let updateQty = `SELECT * FROM products WHERE id = ${itemId}`;
@@ -115,22 +121,63 @@ function addToInventory(){
                 if (error) throw error;
             
                 let itemNameQuery = result[0].product_name;
-                let itemQuantityQuery = result[0].stock_quantity;
 
                 let query = `UPDATE products SET stock_quantity = (stock_quantity + ${itemQty}) WHERE id = ${itemId}`;
                 con.query(query, (error, result)=>{
                     if (error) throw error;
+                    console.log(" ");
                     console.log("Success! You have just added " + itemQty + " to " + itemNameQuery)
                     console.log("|--------------------------------------------------|");
                     console.log(" ");
                     displayItems();
                 })
-                
             })
-
         })
     })
-    
+}
+
+function addNewProduct(){
+    console.log("|--------------------------------------------------|");
+    console.log("|-------------------Add New Product----------------|");
+    console.log("|--------------------------------------------------|");
+    console.log(" ");
+    inquirer.prompt({
+        name: "itemToAdd",
+        type: "input",
+        message: "What NEW item do you want to add? Type the product name:"
+    }).then(answer => {
+        let newItem = answer.itemToAdd;
+        inquirer.prompt({
+            name: "howMany",
+            type: "input",
+            message: "How many do you want to add?",
+        }).then(answer => {
+            let itemQty = answer.howMany;
+            inquirer.prompt({
+                name: "price",
+                type: "input",
+                message: "How much is ONE unit?",
+            }).then(answer => {
+                let itemPrice = answer.price;
+                inquirer.prompt({
+                    name: "department",
+                    type: "input",
+                    message: "What department does this item belong to?"
+                }).then(answer => {
+                    let itemDept = answer.department;
+                    let query = `INSERT INTO products (product_name, department_name, price, stock_quantity) VALUE ("${newItem}", "${itemDept}", ${itemPrice}, ${itemQty})`
+                    con.query(query, (error, result) => {
+                        if (error) throw error;
+                        console.log(" ");
+                        console.log("Success! You have just added " + newItem + " | " + "$" + itemPrice + " | Quantity: " + itemQty + " | Department: " + itemDept);
+                        console.log("|--------------------------------------------------|");
+                        console.log(" ");
+                        displayItems();
+                    })
+                })
+            })
+        })
+    })
 }
 
 function noBuy(){

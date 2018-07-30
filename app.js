@@ -70,9 +70,9 @@ function yesBuy(){
         inquirer.prompt({
             name: "howMany",
             type: "input",
-            message: "How many do you want to buy of item #" + itemId + " ?",
+            message: "How many do you want to buy of item #" + itemId + "?",
         }).then(answer => {
-            let itemQty = answer.howMany
+            let itemQty = answer.howMany;
             console.log("|--------------------------------------------------|");
             console.log("You want item #" + itemId + " | " + "Quantity: " + itemQty)
             let checkQty = `SELECT * FROM products WHERE id = ${itemId}`;
