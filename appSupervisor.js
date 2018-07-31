@@ -56,6 +56,8 @@ function displaySales(){
     let query = "SELECT departments.department_name, products.department_name, products.product_name FROM departments, products WHERE departments.department_name = products.department_name ORDER BY departments.department_name"
     con.query(query, (error, results) => {
         if (error) throw error;
-        console.log(results[0]);
+        console.log("Your table here");
+        console.log(results);
+        
     })
 }
